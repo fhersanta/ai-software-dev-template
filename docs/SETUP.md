@@ -40,8 +40,8 @@ Esto aplica a sesiones con un único repositorio. Por eso cada skill de terceros
 | Headroom | [headroomlabs-ai/headroom](https://github.com/headroomlabs-ai/headroom) (Apache-2.0) | Proxy que comprime lo que lee el modelo | CLI instalado por el hook de inicio; el proxy queda apagado | Ver "Headroom" abajo |
 | security-guidance | Plugin oficial de Anthropic | Revisión de seguridad automática mientras se escribe | El hook de inicio lo instala a nivel proyecto | Automático desde la siguiente sesión |
 | `/security-review` | Nativo de Claude Code | Pasada de seguridad sobre la rama | Ya incluido | Antes de cada PR |
-| Revisión de seguridad en PR | [anthropics/claude-code-security-review](https://github.com/anthropics/claude-code-security-review) (MIT) | Comentarios de seguridad en cada PR | `.github/workflows/security-review.yml` | Requiere el secreto `CLAUDE_API_KEY` en el repo |
-| gitleaks | [gitleaks](https://github.com/gitleaks/gitleaks) (MIT) | Detecta secretos en commits | `.github/workflows/secrets-scan.yml` | Automático en CI |
+| Revisión de seguridad en PR | [anthropics/claude-code-security-review](https://github.com/anthropics/claude-code-security-review) (MIT) | Comentarios de seguridad en cada PR | `.github/workflows/security-review.yml` | Requiere el secreto `CLAUDE_API_KEY` en el repo; sin él se omite |
+| gitleaks | [gitleaks](https://github.com/gitleaks/gitleaks) (MIT) | Detecta secretos en commits | `.github/workflows/secrets-scan.yml`, con el binario en Docker (la Action oficial exige licencia en organizaciones) | Automático en CI |
 
 Además, propios de esta plantilla:
 
