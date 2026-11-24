@@ -1,0 +1,5 @@
+superpowers|obra/superpowers|22f0b463e7a5e579904dd6211a520321035526f7
+ponytail|DietrichGebert/ponytail|ebd8654c2c627f721eb8f9c0d1bd4090a29f9e10
+caveman|JuliusBrussee/caveman|47c61be2d10a354f0c5cbe2b90959d24c06b16c6
+egm|google/elephant-goldfish-model|ef27af6b1d76901d09bb346eea62ce377546052f
+livekit|livekit/agent-skills|378fb2b6998c5a9a4dc135dfbf65af05d0d6c8ac

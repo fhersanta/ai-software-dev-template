@@ -1,0 +1,23 @@
+# Revisión de seguridad con Claude en cada PR.
+# Requiere el secreto CLAUDE_API_KEY en el repositorio.
+# No está endurecida contra prompt injection: solo corre en PR del propio
+# repositorio, nunca en forks.
+name: security-review
+on:
+  pull_request:
+permissions:
+  pull-requests: write
+  contents: read
+jobs:
+  review:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 2
+      - uses: anthropics/claude-code-security-review@main
+        with:
+          comment-pr: true
+          claude-api-key: ${{ secrets.CLAUDE_API_KEY }}
