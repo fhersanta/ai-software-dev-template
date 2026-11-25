@@ -19,7 +19,7 @@ Después, en el repo destino: completar la sección "Comandos del proyecto" de `
 Las sesiones cloud no cargan los marketplaces de plugins declarados en el `settings.json` del repo, ni nada de `~/.claude`. Lo que sí viaja en el clon:
 
 - `CLAUDE.md`
-- `.claude/skills/`, `.claude/agents/`, `.claude/commands/`, `.claude/rules/`
+- `.claude/skills/`, `.claude/agents/`
 - hooks y permisos de `.claude/settings.json`
 - `.mcp.json`
 

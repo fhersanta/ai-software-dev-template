@@ -1,5 +1,6 @@
 # Revisión de seguridad con Claude en cada PR.
-# Requiere el secreto CLAUDE_API_KEY en el repositorio.
+# Requiere el secreto CLAUDE_API_KEY en el repositorio; sin él, el job avisa y
+# termina en verde en lugar de fallar.
 # No está endurecida contra prompt injection: solo corre en PR del propio
 # repositorio, nunca en forks.
 name: security-review
@@ -12,12 +13,18 @@ jobs:
   review:
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    env:
+      HAS_KEY: ${{ secrets.CLAUDE_API_KEY != '' }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Aviso si falta la llave
+        if: env.HAS_KEY != 'true'
+        run: echo "::warning::Falta el secreto CLAUDE_API_KEY; la revisión de seguridad no se ejecutó."
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 2
-      - uses: anthropics/claude-code-security-review@main
+      - if: env.HAS_KEY == 'true'
+        uses: anthropics/claude-code-security-review@0c6a49f1fa56a1d472575da86a94dbc1edb78eda # main, 2026-11-25
         with:
           comment-pr: true
           claude-api-key: ${{ secrets.CLAUDE_API_KEY }}

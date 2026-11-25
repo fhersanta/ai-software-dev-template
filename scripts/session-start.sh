@@ -27,7 +27,7 @@ if command -v claude >/dev/null; then
 fi
 
 # Dependencias del proyecto, si el proyecto define su propio script.
-if [ -x scripts/install-deps.sh ]; then
-  step "dependencias del proyecto" scripts/install-deps.sh
+if [ -x "${CLAUDE_PROJECT_DIR:-.}/scripts/install-deps.sh" ]; then
+  step "dependencias del proyecto" "${CLAUDE_PROJECT_DIR:-.}/scripts/install-deps.sh"
 fi
 exit 0

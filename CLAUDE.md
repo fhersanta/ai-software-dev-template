@@ -4,7 +4,7 @@ Este repo usa el setup de `ai-software-dev-template`. Detalle en `docs/SETUP.md`
 
 ## Proceso (obligatorio)
 
-1. Todo trabajo no trivial empieza con un `intent.md` y un `spec.md` aprobados por el usuario (plantillas en `docs/templates/`).
+1. Todo trabajo no trivial empieza con un `intent.md` y un `spec.md` aprobados por el usuario (plantillas en `docs/templates/`). Los tres documentos de una tarea viven en `docs/work/<tarea>/`; los incidentes en `docs/incidents/<fecha>.md`.
 2. Antes de editar código se escribe `plan.md` y el usuario lo acepta.
 3. Implementación con TDD: test que falla, código mínimo, refactor.
 4. Antes de decir "terminado" se ejecuta el comando de verificación del proyecto y se pega la salida real.
@@ -38,5 +38,5 @@ Este repo usa el setup de `ai-software-dev-template`. Detalle en `docs/SETUP.md`
 
 Completar al aplicar la plantilla:
 
-- Instalar: `scripts/install-deps.sh`
-- Verificar (tests y lint, sale distinto de cero si falla): por definir
+- Instalar: `scripts/install-deps.sh` (crearlo en cada proyecto; la plantilla no lo trae)
+- Verificar (tests y lint, sale distinto de cero si falla): por definir en cada proyecto. Sin este comando no hay etapa de verificación.
