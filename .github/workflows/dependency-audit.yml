@@ -1,0 +1,22 @@
+# Auditoría de dependencias en cada PR y una vez por semana.
+# Falla si hay vulnerabilidades conocidas altas o críticas.
+name: dependency-audit
+on:
+  pull_request:
+  schedule:
+    - cron: '17 7 * * 1'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Python (pip-audit)
+        if: hashFiles('requirements.txt') != ''
+        run: |
+          pipx install pip-audit==2.9.0
+          pip-audit -r requirements.txt --strict
+      - name: Node (npm audit)
+        if: hashFiles('package-lock.json') != ''
+        run: npm audit --audit-level=high --omit=dev
