@@ -63,7 +63,11 @@ Además, propios de esta plantilla:
 
 **EGM.** Sus skills tienen la invocación automática desactivada: se llaman por comando. Cada revisor es un subagente nuevo, así que una revisión completa consume bastantes tokens; úsalo en diseños que lo ameriten. El propio proyecto indica que el soporte en nube es parcial.
 
-**Headroom.** Funciona envolviendo el arranque de Claude (`headroom wrap claude`). En la nube la plataforma arranca Claude, así que no hay forma de envolver la sesión en curso: aquí Headroom no reduce tokens. El CLI queda instalado (versión 0.45.0 probada) para usarlo en una máquina propia:
+**Rutas de EGM.** `scripts/vendor-skills.sh` reescribe `${CLAUDE_PLUGIN_ROOT}` al copiar. En los `SKILL.md` queda como `${CLAUDE_PROJECT_DIR}/.claude/vendor/egm`: Claude Code sustituye esa variable en el contenido del skill (documentado), así que la ruta no depende del directorio donde se inició la sesión. En los demás archivos (soporte de los skills y `.claude/vendor/egm`) la documentación no dice si se sustituye, así que quedan como `.claude/vendor/egm`, relativa a la raíz del proyecto. Límite conocido: si la sesión se inicia en un subdirectorio, esas lecturas secundarias pueden no encontrar el archivo; en ese caso inicia la sesión desde la raíz. No se ha probado en una sesión real.
+
+**Pruebas de los scripts.** `tests/verify.sh` corre las pruebas de `tests/` (sin red ni descargas) y shellcheck si está instalado. `scripts/vendor-skills.sh` se puede cargar con `source` sin ejecutar nada, que es como lo usan las pruebas.
+
+**Headroom.** Funciona envolviendo el arranque de Claude (`headroom wrap claude`). En la nube la plataforma arranca Claude, así que no hay forma de envolver la sesión en curso: aquí Headroom no reduce tokens. El CLI queda instalado con versión exacta fijada en `scripts/session-start.sh` (versión 0.45.0 probada; una prueba mantiene ambos alineados; para actualizar, cambia las dos y revisa el changelog) para usarlo en una máquina propia:
 
 ```bash
 headroom wrap claude
