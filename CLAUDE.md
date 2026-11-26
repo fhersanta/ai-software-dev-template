@@ -39,4 +39,4 @@ Este repo usa el setup de `ai-software-dev-template`. Detalle en `docs/SETUP.md`
 Completar al aplicar la plantilla:
 
 - Instalar: `scripts/install-deps.sh`
-- Verificar (tests y lint, sale distinto de cero si falla): por definir
+- Verificar (tests y lint, sale distinto de cero si falla): por definir. (Las pruebas de esta plantilla están en `tests/verify.sh`; ese directorio no se copia a los proyectos.)

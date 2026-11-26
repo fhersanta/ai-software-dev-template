@@ -13,7 +13,7 @@ description: >-
 # EGM Brainstorm: Interactive Multi-Lens Ideation & Refinement
 
 When running in Codex or ChatGPT Work, first read [Codex integration](../../docs/codex.md).
-In Claude Code or Cowork, read `.claude/vendor/egm/docs/claude.md` first.
+In Claude Code or Cowork, read `${CLAUDE_PROJECT_DIR}/.claude/vendor/egm/docs/claude.md` first.
 
 ## Overview
 

@@ -16,7 +16,7 @@ step() { # descripción comando...
 # Headroom: se instala el CLI, pero NO se envuelve a Claude. Activarlo es
 # manual (ver docs/SETUP.md) porque enruta todo el tráfico por un proxy local.
 if command -v uv >/dev/null && ! command -v headroom >/dev/null; then
-  step "headroom" uv tool install --python 3.13 headroom-ai
+  step "headroom" uv tool install --python 3.13 headroom-ai==0.45.0
 fi
 
 # Plugin de seguridad de Anthropic. Queda activo a partir de la siguiente

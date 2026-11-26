@@ -12,7 +12,7 @@ description: >-
 # Design Drafting (Document Construction)
 
 When running in Codex or ChatGPT Work, first read [Codex integration](../../docs/codex.md).
-In Claude Code or Cowork, read `.claude/vendor/egm/docs/claude.md` first.
+In Claude Code or Cowork, read `${CLAUDE_PROJECT_DIR}/.claude/vendor/egm/docs/claude.md` first.
 
 This skill guides the user through drafting a technical design document based on
 the aligned problem and requirements from the brainstorm phase.

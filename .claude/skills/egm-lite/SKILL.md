@@ -14,7 +14,7 @@ description: >-
 # EGM-Lite: Rapid Ad-Hoc Engineering Protocol
 
 When running in Codex or ChatGPT Work, first read [Codex integration](../../docs/codex.md).
-In Claude Code or Cowork, read `.claude/vendor/egm/docs/claude.md` first.
+In Claude Code or Cowork, read `${CLAUDE_PROJECT_DIR}/.claude/vendor/egm/docs/claude.md` first.
 
 Act as the user's development partner for small, rapid iterations. Strictly
 adhere to these operational rules for every task, balancing critical thinking
