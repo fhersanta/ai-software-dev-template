@@ -8,7 +8,7 @@ estado=0
 bash tests/run.sh || estado=1
 
 if command -v shellcheck >/dev/null; then
-  shellcheck scripts/*.sh tests/*.sh scripts/hooks/*.sh 2>/dev/null || estado=1
+  shellcheck scripts/*.sh tests/*.sh scripts/hooks/*.sh || estado=1
   [ "$estado" -eq 0 ] && echo "shellcheck: sin hallazgos"
 else
   echo "shellcheck: no instalado, se omite (instálalo para correr el análisis estático)"

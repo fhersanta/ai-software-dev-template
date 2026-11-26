@@ -67,7 +67,7 @@ Además, propios de esta plantilla:
 
 **Pruebas de los scripts.** `tests/verify.sh` corre las pruebas de `tests/` (sin red ni descargas) y shellcheck si está instalado. `scripts/vendor-skills.sh` se puede cargar con `source` sin ejecutar nada, que es como lo usan las pruebas.
 
-**Headroom.** Funciona envolviendo el arranque de Claude (`headroom wrap claude`). En la nube la plataforma arranca Claude, así que no hay forma de envolver la sesión en curso: aquí Headroom no reduce tokens. El CLI queda instalado con versión exacta fijada en `scripts/session-start.sh` (versión 0.45.0 probada; una prueba mantiene ambos alineados; para actualizar, cambia las dos y revisa el changelog) para usarlo en una máquina propia:
+**Headroom.** Funciona envolviendo el arranque de Claude (`headroom wrap claude`). En la nube la plataforma arranca Claude, así que no hay forma de envolver la sesión en curso: aquí Headroom no reduce tokens. El CLI queda instalado con versión exacta fijada en `scripts/session-start.sh` (versión 0.45.0 probada; una prueba mantiene ambos alineados; para actualizar, cambia las dos y revisa el changelog; licencia Apache-2.0 según los metadatos de PyPI de esa versión). Límite: se fija el paquete de primer nivel; sus dependencias transitivas no llevan hash ni versión fija para usarlo en una máquina propia:
 
 ```bash
 headroom wrap claude

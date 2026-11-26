@@ -11,8 +11,10 @@
 # hasta que se ejecuta directamente.
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SKILLS="${SKILLS:-$ROOT/.claude/skills}"
-VENDOR="${VENDOR:-$ROOT/.claude/vendor}"
+# Destinos fijos: no se leen del entorno (un SKILLS exportado haría que rm -rf borrara
+# fuera del repo). Las pruebas los reasignan después de cargar el script con source.
+SKILLS="$ROOT/.claude/skills"
+VENDOR="$ROOT/.claude/vendor"
 TMP=""
 
 # nombre | repo | commit fijado
@@ -33,6 +35,9 @@ fetch() { # nombre repo sha
 
 copy_skills() { # nombre skill...
   local name="$1"; shift
+  case "${SKILLS:-}" in
+    ""|/) echo "vendor-skills: destino de skills inválido ('${SKILLS:-}')" >&2; return 1 ;;
+  esac
   for s in "$@"; do
     # Se comprueba el origen ANTES de borrar: si falta, el destino se conserva.
     if [ ! -d "$TMP/$name/skills/$s" ]; then
@@ -70,6 +75,14 @@ rewrite_egm_paths() {
     fi
     sed -i "s|\\\${CLAUDE_PLUGIN_ROOT}|${reemplazo}|g" "$f"
   done < <(grep -rlZ 'CLAUDE_PLUGIN_ROOT' "$SKILLS"/egm-* "$VENDOR/egm" 2>/dev/null || true)
+
+  # Falla en voz alta si queda alguna forma sin reescribir ($CLAUDE_PLUGIN_ROOT sin
+  # llaves, ${CLAUDE_PLUGIN_ROOT:-x}...): un SHA nuevo del upstream podría traerla.
+  if grep -rqs 'CLAUDE_PLUGIN_ROOT' "$SKILLS"/egm-* "$VENDOR/egm"; then
+    echo "vendor-skills: quedan referencias a CLAUDE_PLUGIN_ROOT sin reescribir:" >&2
+    grep -rn 'CLAUDE_PLUGIN_ROOT' "$SKILLS"/egm-* "$VENDOR/egm" 2>/dev/null | cut -c1-160 >&2
+    return 1
+  fi
 }
 
 main() {

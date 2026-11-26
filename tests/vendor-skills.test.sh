@@ -11,9 +11,12 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
 echo "vendor-skills.sh"
 
+W=""
+trap '[ -n "$W" ] && rm -rf "$W"' EXIT
+
 # Entorno aislado: TMP hace de "descargas", SKILLS y VENDOR de destino.
 nuevo_entorno() {
-  W="$(mktemp -d)"
+  W="$(mktemp -d)" || exit 1
   TMP="$W/descargas"; SKILLS="$W/skills"; VENDOR="$W/vendor"
   mkdir -p "$TMP/up/skills/alfa/sub" "$TMP/up/skills/beta" "$SKILLS" "$VENDOR"
   echo "nuevo" > "$TMP/up/skills/alfa/SKILL.md"
@@ -70,6 +73,31 @@ afirma "archivos de soporte del skill usan la ruta relativa a la raíz" grep -qF
 afirma "archivos de vendor/egm usan la ruta relativa a la raíz" grep -qF 'Persona .claude/vendor/egm/agents/y.md' "$VENDOR/egm/docs/claude.md"
 niega  "no queda ninguna CLAUDE_PLUGIN_ROOT en egm-* ni en vendor/egm" grep -rq CLAUDE_PLUGIN_ROOT "$SKILLS/egm-review" "$VENDOR/egm"
 afirma "no toca skills que no son egm-*" grep -qF 'Intacto ${CLAUDE_PLUGIN_ROOT}' "$SKILLS/otro-skill/SKILL.md"
+rm -rf "$W"
+
+# --- hallazgos de la revisión de seguridad ----------------------------------
+# Las variables de entorno genéricas SKILLS/VENDOR no deben redirigir los destinos
+# (un SKILLS exportado en el shell del usuario haría que rm -rf borrara fuera del repo).
+destino="$(SKILLS=/tmp/ajeno VENDOR=/tmp/ajeno2 bash -c '. "'"$ROOT"'/scripts/vendor-skills.sh"; echo "$SKILLS|$VENDOR"')"
+afirma "el entorno no redirige SKILLS (rm -rf)" test "${destino%%|*}" = "$ROOT/.claude/skills"
+afirma "el entorno no redirige VENDOR" test "${destino##*|}" = "$ROOT/.claude/vendor"
+
+# copy_skills se niega a operar con un destino vacío o la raíz del sistema. Cada caso
+# corre en un subshell con TMP propio. El skill de prueba lleva un nombre único para que,
+# si la guarda fallara, no choque con nada del sistema real.
+nuevo_entorno
+nombre="vendor-skills-prueba-$$"
+mkdir -p "$TMP/up/skills/$nombre"; echo x > "$TMP/up/skills/$nombre/SKILL.md"
+niega "copy_skills se niega si SKILLS es /" bash -c '. "'"$ROOT"'/scripts/vendor-skills.sh"; TMP="'"$TMP"'"; SKILLS=/; copy_skills up '"$nombre"
+niega "copy_skills se niega si SKILLS está vacío" bash -c '. "'"$ROOT"'/scripts/vendor-skills.sh"; TMP="'"$TMP"'"; SKILLS=; copy_skills up '"$nombre"
+niega "no se creó nada en la raíz del sistema" test -e "/$nombre"
+rm -rf "$W"
+
+# rewrite_egm_paths falla en voz alta si queda alguna forma sin reescribir.
+nuevo_entorno
+mkdir -p "$SKILLS/egm-review"
+printf 'Forma sin llaves: $CLAUDE_PLUGIN_ROOT/docs\n' > "$SKILLS/egm-review/SKILL.md"
+niega "rewrite_egm_paths falla si queda una forma no reescrita de CLAUDE_PLUGIN_ROOT" rewrite_egm_paths
 rm -rf "$W"
 
 resumen
